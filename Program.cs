@@ -52,22 +52,24 @@ class Program
 
 
         Console.ForegroundColor = ConsoleColor.Red;
-        string forvisual = @$"
- __     __  __              __                      __        __    __  __               ______             __                     
-/  |   /  |/  |            /  |                    /  |      /  |  /  |/  |             /      \           /  |                    
-$$ |   $$ |$$/  _______   _$$ |_     ______    ____$$ |      $$ |  $$ |$$ |   __       /$$$$$$  | _______  $$/   ______    ______  
-$$ |   $$ |/  |/       \ / $$   |   /      \  /    $$ |      $$ |  $$ |$$ |  /  |      $$ \__$$/ /       \ /  | /      \  /      \ 
-$$  \ /$$/ $$ |$$$$$$$  |$$$$$$/   /$$$$$$  |/$$$$$$$ |      $$ |  $$ |$$ |_/$$/       $$      \ $$$$$$$  |$$ |/$$$$$$  |/$$$$$$  |
- $$  /$$/  $$ |$$ |  $$ |  $$ | __ $$    $$ |$$ |  $$ |      $$ |  $$ |$$   $$<         $$$$$$  |$$ |  $$ |$$ |$$ |  $$ |$$    $$ |
-  $$ $$/   $$ |$$ |  $$ |  $$ |/  |$$$$$$$$/ $$ \__$$ |      $$ \__$$ |$$$$$$  \       /  \__$$ |$$ |  $$ |$$ |$$ |__$$ |$$$$$$$$/ 
-   $$$/    $$ |$$ |  $$ |  $$  $$/ $$       |$$    $$ |      $$    $$/ $$ | $$  |      $$    $$/ $$ |  $$ |$$ |$$    $$/ $$       |
-    $/     $$/ $$/   $$/    $$$$/   $$$$$$$/  $$$$$$$/        $$$$$$/  $$/   $$/        $$$$$$/  $$/   $$/ $$/ $$$$$$$/   $$$$$$$/ 
-                                                                                                               $$ |                
-                                                                                                               $$ |                
-                                                                                                               $$/                 
+        string forvisual = @$"$$\    $$\ $$\            $$\                     $$\       $$\                  $$\           
+$$ |   $$ |\__|           $$ |                    $$ |      $$ |                 $$ |          
+$$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $$$$$$\         
+\$$\  $$  |$$ |$$  __$$\\_$$  _|  $$  __$$\ $$  __$$ |      $$  __$$\ $$  __$$\\_$$  _|        
+ \$$\$$  / $$ |$$ |  $$ | $$ |    $$$$$$$$ |$$ /  $$ |      $$ |  $$ |$$ /  $$ | $$ |          
+  \$$$  /  $$ |$$ |  $$ | $$ |$$\ $$   ____|$$ |  $$ |      $$ |  $$ |$$ |  $$ | $$ |$$\       
+   \$  /   $$ |$$ |  $$ | \$$$$  |\$$$$$$$\ \$$$$$$$ |      $$$$$$$  |\$$$$$$  | \$$$$  |      
+    \_/    \__|\__|  \__|  \____/  \_______| \_______|      \_______/  \______/   \____/       
+                                                                                               
+                                                                                               
+                                                                                               
 
+
+                                                                Version : 1.1
                                                                 Contact : ask0v_
-                                                                Version : V1
+
+
+
 ";
 
         Console.WriteLine(forvisual);
@@ -162,34 +164,47 @@ $$  \ /$$/ $$ |$$$$$$$  |$$$$$$/   /$$$$$$  |/$$$$$$$ |      $$ |  $$ |$$ |_/$$/
 
                 string reponseInputuser = Console.ReadLine();
 
+
+
+                Guid randomGuid = Guid.NewGuid();
+
+                var guid1 = randomGuid.ToString();
+
                 switch (reponseInputuser)
                 {
 
 
                     case "1":
 
+                        var tasks = new List<Task>();
                         
 
-                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=relevance&size_ids=207,208,209";  // Toutes les tailles
-                        await getCatalog(url, webhook);
-                        break;
+                        for (int i = 0; i < 1;i++) { 
+                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
+                        tasks.Add(Task.Run(() => getCatalog(url, webhook)));
+                        }
+
+                        await Task.WhenAll(tasks);
+                        break;  
+
+
 
                     case "2":
 
-                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=relevance&size_ids=207,208";   // Taille s, taille m
+                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
                         await getCatalog(url1, webhook);
                         break;
 
                     case "3":
 
 
-                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=relevance&size_ids=207";   // Taille s
+                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
                         await getCatalog(url2, webhook);
                         break;
 
                     case "4":
 
-                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=relevance";  // Toute recherche sans taille exact
+                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
                         await getCatalog(url3, webhook);
                         break;
 
@@ -244,26 +259,26 @@ $$  \ /$$/ $$ |$$$$$$$  |$$$$$$/   /$$$$$$  |/$$$$$$$ |      $$ |  $$ |$$ |_/$$/
 
 
                     case "1":
-                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=relevance&size_ids=3,4,5";  // Toutes les tailles
+                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
                         await getCatalog(url, webhook);
                         break;
 
 
                     case "2":
 
-                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=relevance&size_ids=3,4";   // Taille s, taille m
+                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
                         await getCatalog(url1, webhook);
                         break;
 
                     case "3":
 
-                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=relevance&size_ids=3";   // Taille s
+                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
                         await getCatalog(url2, webhook);
                         break;
 
                     case "4":
 
-                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=relevance";  // Toute recherche sans taille exact
+                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
                         await getCatalog(url3, webhook);
                         break;
 
@@ -368,12 +383,6 @@ $$  \ /$$/ $$ |$$$$$$$  |$$$$$$/   /$$$$$$  |/$$$$$$$ |      $$ |  $$ |$$ |_/$$/
 
                                 if (maxPrice > price)
                                 {
-
-
-
-                                    
-
-
                                     try
                                     {
                                         using (HttpClient client2 = new HttpClient())
