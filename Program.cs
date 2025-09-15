@@ -26,6 +26,8 @@ public class Item
 public class Price
 {
     public string amount { get; set; }
+
+    public string currency_code { get; set; }
 }
 
 public class Photo
@@ -65,7 +67,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                                                                                
 
 
-                                                                Version : 1.1
+                                                                Version : 1.2
                                                                 Contact : ask0v_
 
 
@@ -96,26 +98,20 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
             Console.WriteLine(" ");
         }
 
-
-        Console.WriteLine("Entre ton webhook discord ici : ");
-        string webhook = Console.ReadLine();
-        Console.ResetColor();
-
-       
-
         for (int i = 0; i < 5; i++)
         {
             Console.WriteLine(" ");
         }
 
-
-        
-
-        
-
-        
-        
         Console.ResetColor();
+
+
+        Console.ForegroundColor= ConsoleColor.Magenta;
+        Console.WriteLine("Entre le nom de domaine vinted dans le quel tu veux faire tes recherches (exemple: .fr) : ");
+        string ndd = Console.ReadLine();
+        Console.ResetColor();
+
+        
 
         for (int i = 0; i < 5; i++)
         {
@@ -180,8 +176,8 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                         
 
                         for (int i = 0; i < 1;i++) { 
-                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
-                        tasks.Add(Task.Run(() => getCatalog(url, webhook)));
+                        string url = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
+                        tasks.Add(Task.Run(() => getCatalog(url, DiscordWebhook.saveUrl())));
                         }
 
                         await Task.WhenAll(tasks);
@@ -191,21 +187,21 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                     case "2":
 
-                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
-                        await getCatalog(url1, webhook);
+                        string url1 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
+                        await getCatalog(url1, DiscordWebhook.saveUrl());
                         break;
 
                     case "3":
 
 
-                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
-                        await getCatalog(url2, webhook);
+                        string url2 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
+                        await getCatalog(url2, DiscordWebhook.saveUrl());
                         break;
 
                     case "4":
 
-                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
-                        await getCatalog(url3, webhook);
+                        string url3 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
+                        await getCatalog(url3, DiscordWebhook.saveUrl());
                         break;
 
                     default:
@@ -259,27 +255,27 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
 
                     case "1":
-                        string url = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
-                        await getCatalog(url, webhook);
+                        string url = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
+                        await getCatalog(url, DiscordWebhook.saveUrl());
                         break;
 
 
                     case "2":
 
-                        string url1 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
-                        await getCatalog(url1, webhook);
+                        string url1 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
+                        await getCatalog(url1, DiscordWebhook.saveUrl());
                         break;
 
                     case "3":
 
-                        string url2 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
-                        await getCatalog(url2, webhook);
+                        string url2 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
+                        await getCatalog(url2, DiscordWebhook.saveUrl());
                         break;
 
                     case "4":
 
-                        string url3 = $"https://vinted.co.uk/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
-                        await getCatalog(url3, webhook);
+                        string url3 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
+                        await getCatalog(url3, DiscordWebhook.saveUrl());
                         break;
 
                     default:
@@ -290,13 +286,15 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                     case "3":
 
-                        await checkWebhook(webhook);
+                        await checkWebhook(DiscordWebhook.saveUrl());
                         break;
 
 
 
             default:
-                Console.WriteLine("Choisi un genre");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Choisi un genre homme ou femme");
+                Console.ResetColor();
                 break;
 
         }
@@ -365,6 +363,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
 
                                 string[] splitNumber = item.price.amount.Split(".");
+                                 
 
                                 string partieOfficielle = splitNumber[0];
 
@@ -374,6 +373,10 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                 string prixMaximumString = Program.PrixMaximum;
 
                                 int maxPrice = int.Parse(prixMaximumString);
+
+                                
+
+                                
 
 
 
@@ -389,7 +392,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                         {
                                             var content = new
                                             {
-                                                username = "Vinted Gb Bot [Askov]",
+                                                username = "Vinted Bot [Askov]",
                                                 embeds = new[]
                                                 {
                                             new {
@@ -398,11 +401,13 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                                 fields = new[]
                                                 {
                                                     new { name = "", value = ("-----------------------------"), inline = false },
-                                                    new { name = "Titre", value = ($"Titre: {item.title}"), inline = true },
-                                                    new { name = "Prix", value = ($"Prix: {item.price.amount} GBP"), inline = true },
-                                                    new { name = "Lien", value = ($"URL: {item.url}"), inline = true },
-                                                    new { name = "Date", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), inline = false },
-                                                    new { name = "Contact", value = ("Discord : ask0v_"), inline = false }
+                                                    new { name = "Titre", value = ($"{item.title}"), inline = true },
+                                                    new { name = "Prix", value = ($"{item.price.amount} {item.price.currency_code}"), inline = true },
+                                                    new { name = "Lien", value = ($"{item.url}"), inline = true },
+                                                    new { name = "Date", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), inline = true },
+                                                    new { name = "Contact", value = ("Discord : ask0v_"), inline = false },
+                                                    new { name = "", value = ("-----------------------------"), inline = false },
+                                                    
 
                                                 }
                                             }
@@ -498,7 +503,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
             {
                 var content = new
                 {
-                    username = "Vinted Gb Bot [Askov] TEST WEBHOOK",
+                    username = "Vinted Bot [Askov] TEST WEBHOOK",
                     embeds = new[]
                     {
                                             new {
@@ -544,14 +549,20 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine($@"
-+------------------------------------+
-|        Vinted Askov Bot            |
-+--------------------------+---------+
-| Articles trouves  | ⚡ {articlesTrouves} 
-| Erreurs           | ⚠️ {erreurs}    
-| Articles verifies | 🔍 {articlesVerifies} 
-+--------------------------+---------+");
+                            ════════════════════════════════════════════════════
+                                            V I N T E D   A S K O V   B O T
+                            ══════════════════╦═════════════════════════════════
+                             Articles trouvés ║ {articlesTrouves,10}
+                            ──────────────────╬─────────────────────────────────
+                             Erreurs          ║ {erreurs,10}
+                            ──────────────────╬─────────────────────────────────
+                             Articles vérifiés║ {articlesVerifies,10}
+                            ══════════════════╩═════════════════════════════════
+");
+
         Console.ResetColor();
+
+        
 
     }
 
