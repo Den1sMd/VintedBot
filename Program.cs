@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -40,21 +42,36 @@ public class Photo
 
 
 
-
-
-
-
 class Program
 {
 
     public static string PrixMaximum;
 
+    private static string nomdedom;
+
+    private static string keyword;
+
+    private static string hwidI;
+
+    private static string hwidhash;
+
+    private static string sec2;
+    
+    private static string sec3;
+
+
     static async Task Main(string[] args)
     {
 
+        hwidI = Security.hwid();
+        hwidhash = Security.hashHwid1();
 
-        Console.ForegroundColor = ConsoleColor.Red;
-        string forvisual = @$"$$\    $$\ $$\            $$\                     $$\       $$\                  $$\           
+        sec3 = Security.sec3(hwidhash);
+
+        if (sec3 == "suc")
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            string forvisual = @$"$$\    $$\ $$\            $$\                     $$\       $$\                  $$\           
 $$ |   $$ |\__|           $$ |                    $$ |      $$ |                 $$ |          
 $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $$$$$$\         
 \$$\  $$  |$$ |$$  __$$\\_$$  _|  $$  __$$\ $$  __$$ |      $$  __$$\ $$  __$$\\_$$  _|        
@@ -67,245 +84,298 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                                                                                
 
 
-                                                                Version : 1.2
+                                                                Version : 1.3
                                                                 Contact : ask0v_
 
 
 
 ";
 
-        Console.WriteLine(forvisual);
-        Console.ResetColor();
+            Console.WriteLine(forvisual);
+            Console.ResetColor();
 
-        for (int i = 0; i < 5; i++)
+
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(" ");
+            }
+
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Homme ou Femme ?");
+            Console.WriteLine("1: Homme");
+            Console.WriteLine("2: Femme");
+            Console.WriteLine();
+            Console.WriteLine("Parametres : ");
+            Console.WriteLine("3: Check Webhook");
+            Console.WriteLine("4: Historique de mes recherches");
+            Console.WriteLine("5: Auto Buy");
+
+            string femmeOrHomme = Console.ReadLine();
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(" ");
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(" ");
+            }
+
+            Console.ResetColor();
+
+
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(" ");
+            }
+
+
+
+            switch (femmeOrHomme)
+            {
+
+
+                case "1":
+
+                    Console.Clear();
+
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Entre le nom de l objet que tu veux snipe ?");
+                    string contient_mot = Console.ReadLine();
+                    keyword = contient_mot;
+
+                    AddWordHist.createListAdd(contient_mot);
+
+
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+
+                    Console.Clear();
+
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Entre le prix maximum que tu veux snipe ?");
+                    PrixMaximum = Console.ReadLine();
+
+                    Console.Clear();
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Choisi un mode : 1,2,3,4");
+
+                    Console.WriteLine("Mode 1 : Toutes les tailles (S,L,M)");
+                    Console.WriteLine("Mode 2 : Taille : S, M");
+                    Console.WriteLine("Mode 3 : Taille : S");
+                    Console.WriteLine("Mode 4 : Tout les vetements sans tailles");
+
+                    Console.WriteLine("Have error ? contact : ask0v_");
+
+
+
+                    string reponseInputuser = Console.ReadLine();
+
+
+
+                    Guid randomGuid = Guid.NewGuid();
+
+                    var guid1 = randomGuid.ToString();
+
+                    switch (reponseInputuser)
+                    {
+
+
+                        case "1":
+
+                            var tasks = new List<Task>();
+
+                            Console.Clear();
+
+                            for (int i = 0; i < 1; i++)
+                            {
+                                string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
+                                tasks.Add(Task.Run(() => getCatalog(url, DiscordWebhook.saveUrl())));
+                            }
+
+                            Console.Clear();
+
+                            await Task.WhenAll(tasks);
+                            break;
+
+
+
+                        case "2":
+
+                            Console.Clear();
+
+                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
+                            await getCatalog(url1, DiscordWebhook.saveUrl());
+
+                            break;
+
+                        case "3":
+
+                            Console.Clear();
+
+
+                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
+                            await getCatalog(url2, DiscordWebhook.saveUrl());
+                            break;
+
+                        case "4":
+
+                            Console.Clear();
+
+                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
+                            await getCatalog(url3, DiscordWebhook.saveUrl());
+                            break;
+
+                        default:
+
+                            Console.Clear();
+                            Console.WriteLine("Choix invalide. Veuillez choisir un mode entre 1 et 4.");
+                            break;
+                    }
+                    break;
+
+                case "2":
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+
+                    Console.Clear();
+
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Entre le nom de l objet que tu veux snipe ?");
+                    string contient_mot1 = Console.ReadLine();
+                    keyword = contient_mot1;
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+
+
+                    Console.Clear();
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("Entre le prix maximum que tu veux snipe ?");
+                    PrixMaximum = Console.ReadLine();
+
+
+                    Console.Clear();
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Choisi un mode : 1,2,3,4");
+
+                    Console.WriteLine("Mode 1 : Toutes les tailles (S,L,M)");
+                    Console.WriteLine("Mode 2 : Taille : S, M");
+                    Console.WriteLine("Mode 3 : Taille : S");
+                    Console.WriteLine("Mode 4 : Tout les vetements sans tailles");
+                    Console.WriteLine("  ");
+                    Console.WriteLine("Have error ? contact : ask0v_");
+
+
+
+                    string reponseInputuser1 = Console.ReadLine();
+
+
+                    switch (reponseInputuser1)
+                    {
+
+
+                        case "1":
+                            Console.Clear();
+                            string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
+                            await getCatalog(url, DiscordWebhook.saveUrl());
+                            break;
+
+
+                        case "2":
+                            Console.Clear();
+                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
+                            await getCatalog(url1, DiscordWebhook.saveUrl());
+                            break;
+
+                        case "3":
+                            Console.Clear();
+                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
+                            await getCatalog(url2, DiscordWebhook.saveUrl());
+                            break;
+
+                        case "4":
+                            Console.Clear();
+                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
+                            await getCatalog(url3, DiscordWebhook.saveUrl());
+                            break;
+
+                        default:
+                            Console.Clear();
+                            Console.WriteLine("Choix invalide. Veuillez choisir un mode entre 1 et 4.");
+                            break;
+                    }
+                    break;
+
+                case "3":
+                    Console.Clear();
+                    await checkWebhook(DiscordWebhook.saveUrl());
+                    break;
+
+                case "4":
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine(AddWordHist.lookHisto());
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+
+                case "5":
+                    Console.Clear();
+                    string result = await Autobuy.login();
+                    Console.WriteLine("\nRésultat de login :");
+                    Console.WriteLine(result);
+                    Console.WriteLine("\nAppuie sur une touche pour continuer...");
+                    Console.ReadKey();
+                    break;
+
+
+
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Choisi un genre homme ou femme");
+                    Console.ResetColor();
+                    break;
+
+            }
+        }
+
+        else
         {
-            Console.WriteLine(" ");
+            Console.Clear();
+
+            Console.ForegroundColor= ConsoleColor.Red;
+            Console.WriteLine("Tu peux pas partagé le logiciel merci de l'acheté.");
+            Console.ReadLine();
+            Console.ResetColor();
         }
 
 
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("Homme ou Femme ?");
-        Console.WriteLine("1: Homme");
-        Console.WriteLine("2: Femme");
-        Console.WriteLine();
-        Console.WriteLine("Parametres : ");
-        Console.WriteLine("3: Check Webhook");
-
-        string femmeOrHomme = Console.ReadLine();
-
-        for (int i = 0; i < 5; i++)
-        {
-            Console.WriteLine(" ");
-        }
-
-        for (int i = 0; i < 5; i++)
-        {
-            Console.WriteLine(" ");
-        }
-
-        Console.ResetColor();
 
 
-        Console.ForegroundColor= ConsoleColor.Magenta;
-        Console.WriteLine("Entre le nom de domaine vinted dans le quel tu veux faire tes recherches (exemple: .fr) : ");
-        string ndd = Console.ReadLine();
-        Console.ResetColor();
 
         
-
-        for (int i = 0; i < 5; i++)
-        {
-            Console.WriteLine(" ");
-        }
-
-
-
-        switch (femmeOrHomme)
-        {
-            case "1":
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine(" ");
-                }
-
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Entre le nom de l objet que tu veux snipe ?");
-                string contient_mot = Console.ReadLine();
-
-
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine(" ");
-                }
-
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.Write("Entre le prix maximum que tu veux snipe ?");
-                PrixMaximum = Console.ReadLine();
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Choisi un mode : 1,2,3,4");
-
-                Console.WriteLine("Mode 1 : Toutes les tailles (S,L,M)");
-                Console.WriteLine("Mode 2 : Taille : S, M");
-                Console.WriteLine("Mode 3 : Taille : S");
-                Console.WriteLine("Mode 4 : Tout les vetements sans tailles");
-
-                Console.WriteLine("Have error ? contact : ask0v_");
-
-
-
-                string reponseInputuser = Console.ReadLine();
-
-
-
-                Guid randomGuid = Guid.NewGuid();
-
-                var guid1 = randomGuid.ToString();
-
-                switch (reponseInputuser)
-                {
-
-
-                    case "1":
-
-                        var tasks = new List<Task>();
-                        
-
-                        for (int i = 0; i < 1;i++) { 
-                        string url = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
-                        tasks.Add(Task.Run(() => getCatalog(url, DiscordWebhook.saveUrl())));
-                        }
-
-                        await Task.WhenAll(tasks);
-                        break;  
-
-
-
-                    case "2":
-
-                        string url1 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
-                        await getCatalog(url1, DiscordWebhook.saveUrl());
-                        break;
-
-                    case "3":
-
-
-                        string url2 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
-                        await getCatalog(url2, DiscordWebhook.saveUrl());
-                        break;
-
-                    case "4":
-
-                        string url3 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
-                        await getCatalog(url3, DiscordWebhook.saveUrl());
-                        break;
-
-                    default:
-                        Console.WriteLine("Choix invalide. Veuillez choisir un mode entre 1 et 4.");
-                        break;
-                }
-                break;
-
-            case "2":
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine(" ");
-                }
-
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Entre le nom de l objet que tu veux snipe ?");
-                string contient_mot1 = Console.ReadLine();
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine(" ");
-                }
-
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.Write("Entre le prix maximum que tu veux snipe ?");
-                PrixMaximum = Console.ReadLine();
-
-
-
-
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Choisi un mode : 1,2,3,4");
-
-                Console.WriteLine("Mode 1 : Toutes les tailles (S,L,M)");
-                Console.WriteLine("Mode 2 : Taille : S, M");
-                Console.WriteLine("Mode 3 : Taille : S");
-                Console.WriteLine("Mode 4 : Tout les vetements sans tailles");
-                Console.WriteLine("  ");
-                Console.WriteLine("Have error ? contact : ask0v_");
-
-
-
-                string reponseInputuser1 = Console.ReadLine();
-
-
-                switch (reponseInputuser1)
-                {
-
-
-                    case "1":
-                        string url = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
-                        await getCatalog(url, DiscordWebhook.saveUrl());
-                        break;
-
-
-                    case "2":
-
-                        string url1 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
-                        await getCatalog(url1, DiscordWebhook.saveUrl());
-                        break;
-
-                    case "3":
-
-                        string url2 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
-                        await getCatalog(url2, DiscordWebhook.saveUrl());
-                        break;
-
-                    case "4":
-
-                        string url3 = $"https://vinted{ndd}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
-                        await getCatalog(url3, DiscordWebhook.saveUrl());
-                        break;
-
-                    default:
-                        Console.WriteLine("Choix invalide. Veuillez choisir un mode entre 1 et 4.");
-                        break;
-                }
-                break;
-
-                    case "3":
-
-                        await checkWebhook(DiscordWebhook.saveUrl());
-                        break;
-
-
-
-            default:
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Choisi un genre homme ou femme");
-                Console.ResetColor();
-                break;
-
-        }
-
-
-
-
-        
-
-
-
 
 
 
@@ -548,6 +618,8 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
         Console.ForegroundColor = ConsoleColor.Blue;
+
+        
         Console.WriteLine($@"
                             ════════════════════════════════════════════════════
                                             V I N T E D   A S K O V   B O T
@@ -558,12 +630,43 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                             ──────────────────╬─────────────────────────────────
                              Articles vérifiés║ {articlesVerifies,10}
                             ══════════════════╩═════════════════════════════════
+
+
+                                              Settings :
+                                                
+                                    - Nom De Domaine vinted : {nomdedom}
+
+                                    - Article : {keyword}
+
+                                    - Prix Max : {PrixMaximum}
+
+                                    - Hwid : {hwidI}
+
+
+
+
+
+
 ");
 
         Console.ResetColor();
 
         
 
+
+
+    }
+
+    static async Task<string> reqRecherche()
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("Entre le nom de domaine vinted dans le quel tu veux faire tes recherches (exemple: .fr) : ");
+        string ndd = Console.ReadLine();
+        Console.ResetColor();
+
+        nomdedom = ndd;
+
+        return ndd;
     }
 
 

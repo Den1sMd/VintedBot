@@ -53,9 +53,11 @@ namespace Vinted_UK_Bot
                 }
             }
 
+            Console.ResetColor();
+
             return durl;
 
-            Console.ResetColor();
+            
         }
     }
 }
