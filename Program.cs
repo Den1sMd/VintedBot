@@ -23,6 +23,7 @@ public class Item
     public Price price { get; set; }
     public Photo photo { get; set; }
     public string title { get; set; }
+    public long id { get; set; }
 }
 
 public class Price
@@ -59,6 +60,9 @@ class Program
     
     private static string sec3;
 
+    public static int timeout;
+
+
 
     static async Task Main(string[] args)
     {
@@ -74,20 +78,12 @@ class Program
             string forvisual = @$"$$\    $$\ $$\            $$\                     $$\       $$\                  $$\           
 $$ |   $$ |\__|           $$ |                    $$ |      $$ |                 $$ |          
 $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $$$$$$\         
-\$$\  $$  |$$ |$$  __$$\\_$$  _|  $$  __$$\ $$  __$$ |      $$  __$$\ $$  __$$\\_$$  _|        
+\$$\  $$  |$$ |$$  __$$\\_$$  _|  $$  __$$\ $$  __$$ |      $$  __$$\ $$  __$$\\_$$  _|        Version : 2.5
  \$$\$$  / $$ |$$ |  $$ | $$ |    $$$$$$$$ |$$ /  $$ |      $$ |  $$ |$$ /  $$ | $$ |          
-  \$$$  /  $$ |$$ |  $$ | $$ |$$\ $$   ____|$$ |  $$ |      $$ |  $$ |$$ |  $$ | $$ |$$\       
+  \$$$  /  $$ |$$ |  $$ | $$ |$$\ $$   ____|$$ |  $$ |      $$ |  $$ |$$ |  $$ | $$ |$$\       Contact : ask0v_
    \$  /   $$ |$$ |  $$ | \$$$$  |\$$$$$$$\ \$$$$$$$ |      $$$$$$$  |\$$$$$$  | \$$$$  |      
     \_/    \__|\__|  \__|  \____/  \_______| \_______|      \_______/  \______/   \____/       
                                                                                                
-                                                                                               
-                                                                                               
-
-
-                                                                Version : 1.3
-                                                                Contact : ask0v_
-
-
 
 ";
 
@@ -112,6 +108,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
             Console.WriteLine("3: Check Webhook");
             Console.WriteLine("4: Historique de mes recherches");
             Console.WriteLine("5: Auto Buy");
+            Console.WriteLine("6: AccesT (Only for debugging)");
 
             string femmeOrHomme = Console.ReadLine();
 
@@ -152,6 +149,22 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                     keyword = contient_mot;
 
                     AddWordHist.createListAdd(contient_mot);
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Console.WriteLine(" ");
+                    }
+
+                    Console.Clear();
+
+                    
+
+
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("Entre le timeout en ms : (exemple 1000 = 1sec)");
+                    string cont_timeout = Console.ReadLine();
+                    int timeout2 = int.Parse(cont_timeout);
+                    timeout = timeout2;
 
 
 
@@ -195,19 +208,11 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                         case "1":
 
-                            var tasks = new List<Task>();
-
                             Console.Clear();
 
-                            for (int i = 0; i < 1; i++)
-                            {
-                                string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
-                                tasks.Add(Task.Run(() => getCatalog(url, DiscordWebhook.saveUrl())));
-                            }
+                            string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208,209";  // Toutes les tailles
+                            await getCatalog(url, DiscordWebhook.saveUrl());
 
-                            Console.Clear();
-
-                            await Task.WhenAll(tasks);
                             break;
 
 
@@ -216,7 +221,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                             Console.Clear();
 
-                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
+                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207,208";   // Taille s, taille m
                             await getCatalog(url1, DiscordWebhook.saveUrl());
 
                             break;
@@ -226,7 +231,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                             Console.Clear();
 
 
-                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
+                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=207";   // Taille s
                             await getCatalog(url2, DiscordWebhook.saveUrl());
                             break;
 
@@ -234,7 +239,7 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                             Console.Clear();
 
-                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
+                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&global_search_session_id={guid1}&search_text={trier(contient_mot)}&catalog_ids=&order=newest_first&size_ids=&brand_ids=&status_ids=&color_ids=&material_ids=";  // Toute recherche sans taille exact
                             await getCatalog(url3, DiscordWebhook.saveUrl());
                             break;
 
@@ -297,26 +302,30 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                         case "1":
                             Console.Clear();
-                            string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
+
+                            string url = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4,5";  // Toutes les tailles
                             await getCatalog(url, DiscordWebhook.saveUrl());
                             break;
 
 
                         case "2":
                             Console.Clear();
-                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
+
+                            string url1 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3,4";   // Taille s, taille m
                             await getCatalog(url1, DiscordWebhook.saveUrl());
                             break;
 
                         case "3":
                             Console.Clear();
-                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
+
+                            string url2 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first&size_ids=3";   // Taille s
                             await getCatalog(url2, DiscordWebhook.saveUrl());
                             break;
 
                         case "4":
                             Console.Clear();
-                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=5&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
+
+                            string url3 = $"https://vinted{await reqRecherche()}/api/v2/catalog/items?page=1&per_page=10&order=newest_first&search_text={trier(contient_mot1)}&catalog_ids=&order=newest_first";  // Toute recherche sans taille exact
                             await getCatalog(url3, DiscordWebhook.saveUrl());
                             break;
 
@@ -342,11 +351,18 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                 case "5":
                     Console.Clear();
-                    string result = await Autobuy.login();
-                    Console.WriteLine("\nRésultat de login :");
-                    Console.WriteLine(result);
-                    Console.WriteLine("\nAppuie sur une touche pour continuer...");
-                    Console.ReadKey();
+                    
+                    string accestoken = await AccesToken.getAccesToken();
+                    string result = await Autobuy.login(accestoken);
+                    break;
+
+                case "6":
+                    Console.Clear();
+                    string accestoken1 = await AccesToken.getAccesToken();
+                    string refreshtoken = await AccesToken.getRefreshToken();
+                    Console.WriteLine($"{accestoken1}");
+
+                    Console.WriteLine($"{refreshtoken}");
                     break;
 
 
@@ -389,6 +405,9 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
     static async Task getCatalog(string url, string webhook)
     {
+
+        
+
         try
         {
 
@@ -404,17 +423,27 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                 string accestoken = await AccesToken.getAccesToken();
 
-                
+                string refreshtoken = await AccesToken.getRefreshToken();
+
+                await Task.Delay(timeout);
+
+
+
+
+
+
 
 
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36");
-                    client.DefaultRequestHeaders.Add("Cookie", $"access_token_web={accestoken}");
+                    client.DefaultRequestHeaders.Add("Cookie", $"access_token_web={accestoken}; refresh_token_web={refreshtoken}");
                     client.DefaultRequestHeaders.Add("Sec-Fetch-Site", "same-origin");
                     client.DefaultRequestHeaders.Add("Sec-Fetch-Mode", "cors");
                     client.DefaultRequestHeaders.Add("Sec-Fetch-Dest", "empty");
-                    
+                    client.DefaultRequestHeaders.Add("Accept", "application/json, text/plain, */*,image/webp");
+                    client.DefaultRequestHeaders.Add("Accept-Language", "fr");
+
 
 
                     HttpResponseMessage response = await client.GetAsync(url);
@@ -444,27 +473,32 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
 
                                 int maxPrice = int.Parse(prixMaximumString);
 
-                                
+
+                                long itemId = item.id;           //ici
+
+
+                                var slll = await Doublons.checkDouble(itemId);
+
+
 
                                 
-
-
-
-                                articlesTrouves++;
-                                UpdatePanel(articlesTrouves, erreurs, articlesVerifies);
-
-
-                                if (maxPrice > price)
+                                if (slll)
                                 {
-                                    try
+                                    articlesTrouves++;
+                                    UpdatePanel(articlesTrouves, erreurs, articlesVerifies);
+
+
+                                    if (maxPrice > price)
                                     {
-                                        using (HttpClient client2 = new HttpClient())
+                                        try
                                         {
-                                            var content = new
+                                            using (HttpClient client2 = new HttpClient())
                                             {
-                                                username = "Vinted Bot [Askov]",
-                                                embeds = new[]
+                                                var content = new
                                                 {
+                                                    username = "Vinted Bot [Askov]",
+                                                    embeds = new[]
+                                                    {
                                             new {
                                                 title = "Vinted Bot",
                                                 image = (item.photo != null) ? new { url = item.photo.url } : null,
@@ -477,54 +511,60 @@ $$ |   $$ |$$\ $$$$$$$\ $$$$$$\    $$$$$$\   $$$$$$$ |      $$$$$$$\   $$$$$$\ $
                                                     new { name = "Date", value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), inline = true },
                                                     new { name = "Contact", value = ("Discord : ask0v_"), inline = false },
                                                     new { name = "", value = ("-----------------------------"), inline = false },
-                                                    
+
 
                                                 }
                                             }
                                             }
-                                            };
+                                                };
 
-                                            articlesVerifies++;
+                                                articlesVerifies++;
+                                                UpdatePanel(articlesTrouves, erreurs, articlesVerifies);
+
+                                                string json = JsonSerializer.Serialize(content);
+
+                                                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                                                try
+                                                {
+                                                    var response1 = await client.PostAsync(webhook, httpContent);
+                                                    if (!response.IsSuccessStatusCode)
+                                                    {
+                                                        Console.WriteLine("Erreur en envoyant le webhook Discord.");
+
+
+                                                    }
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Console.WriteLine("Rentre un webhook valide ou contact ask0v_ sur discord");
+                                                    Panel.IncrementErrors();
+
+                                                }
+
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Console.WriteLine($"Error: {e.Message} Contact : ask0v_ MAUVAIS WEBHOOK");
+                                            erreurs++;
                                             UpdatePanel(articlesTrouves, erreurs, articlesVerifies);
 
-                                            string json = JsonSerializer.Serialize(content);
-
-                                            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                                            try
-                                            {
-                                                var response1 = await client.PostAsync(webhook, httpContent);
-                                                if (!response.IsSuccessStatusCode)
-                                                {
-                                                    Console.WriteLine("Erreur en envoyant le webhook Discord.");
-
-                                                    
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                Console.WriteLine("Rentre un webhook valide ou contact ask0v_ sur discord");
-                                                Panel.IncrementErrors();
-
-                                            }
 
                                         }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine($"Error: {e.Message} Contact : ask0v_ MAUVAIS WEBHOOK");
-                                        erreurs++;
-                                        UpdatePanel(articlesTrouves, erreurs, articlesVerifies);
+
+
+
+
 
 
                                     }
-
-                                    
-
-                                    
-
-
                                 }
+                                
+
+
+
+                                
                             }
                         }
                         else

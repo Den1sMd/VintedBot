@@ -101,19 +101,24 @@ namespace Vinted_UK_Bot
 
         public static string hashHwid1()
         {
+            if (string.IsNullOrEmpty(realhwid))
+            {
+                try
+                {
+                    realhwid = hwid();
+                }
+                catch
+                {
+                    realhwid = "Unknown-HW";
+                }
+            }
 
             using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(realhwid);
                 byte[] hash = sha256.ComputeHash(bytes);
-                var suc = BitConverter.ToString(hash).Replace("-", "");
-
-
-                return suc;
+                return BitConverter.ToString(hash).Replace("-", "");
             }
-
-
-
         }
 
         public static string securityTest(string hwid, string hashHwid)
