@@ -1,60 +1,45 @@
-🛍️ Vinted Askov Bot
+# 🛍️ Vinted Askov Bot
 
-Un bot en C# (.NET) qui permet de sniper automatiquement des articles sur Vinted (UK, FR, …) et d’envoyer les résultats vers un webhook Discord.
-Le bot filtre les articles selon le genre, le prix maximum, la taille, et notifie en temps réel.
+Un bot en **C# (.NET)** permettant de **sniper automatiquement** des articles sur [Vinted](https://www.vinted.fr/) (UK, FR, …) et d’envoyer les résultats vers un **webhook Discord**.  
+L’outil permet de filtrer les articles selon différents critères (genre, prix, taille, etc.) et de recevoir les résultats en temps réel.
 
-✨ Nouvelles (commit)
+---
 
-git commit -m "Nouveau systeme de sécurité hwid ainsi que les historique de nos recherches prochainement un autobuy"
+## ✨ Nouveautés – Version 2.5
 
-Changements récents
+- 🔐 **Système de sécurité HWID** pour protéger l’accès et gérer les licences.  
+- 🧾 **Sauvegarde de l’historique des recherches** pour éviter les doublons et suivre les articles déjà scannés.  
+- 🛒 Préparation de la future fonctionnalité **AutoBuy** (achat automatique).  
+- 🐞 Divers **correctifs et améliorations de performance**.
 
-Ajout d’un système de sécurité HWID pour protéger le bot et gérer les licences.
+---
 
-Sauvegarde des historiques de recherches, permettant de suivre ce que le bot a déjà scanné.
+## ⚡ Fonctionnalités principales
 
-Préparation pour un futur Autobuy (achat automatique des articles trouvés).
+- 🔎 **Sniper automatique** d’articles Vinted (multi-région : FR, UK, …)  
+- 💰 **Filtrage** par prix maximum  
+- 🧍 Choix du **genre** (Homme / Femme)  
+- 📏 Sélection du **mode de taille** (S, M, L ou sans taille)  
+- 🔁 **Sauvegarde du webhook Discord** pour réutilisation  
+- 🔔 Notification en temps réel sur Discord  
+- ✅ Vérification automatique de la validité du webhook  
+- 🧠 Système **HWID** pour sécuriser l’accès  
+- 📊 Historique des recherches sauvegardé  
+- 📈 Interface console avec compteur :
+  - Articles trouvés
+  - Articles vérifiés
+  - Erreurs détectées
 
-Divers correctifs et améliorations mineures.
+---
 
-✨ Fonctionnalités
+## 🧰 Installation
 
-🔎 Recherche automatisée d’articles sur Vinted (région configurable : fr, uk, …)
+### Prérequis
+- [Visual Studio](https://visualstudio.microsoft.com/) **ou** [.NET SDK](https://dotnet.microsoft.com/en-us/download)
+- .NET 6 ou supérieur
+- Connexion Internet
 
-💰 Filtrage par prix maximum
-
-🧍 Choix du genre : Homme ou Femme
-
-📏 Sélection du mode (taille S, M, L ou sans taille)
-
-🔁 Option : sauvegarde du webhook pour réutilisation sans re-saisie
-
-🔔 Envoi des trouvailles directement sur Discord via un webhook
-
-✅ Vérification de validité du webhook
-
-🔐 Système HWID pour sécuriser l’usage du bot
-
-📊 Historique des recherches sauvegardé
-
-📊 Interface console avec compteur :
-
-Articles trouvés
-
-Articles vérifiés
-
-Erreurs détectées
-
-⚙️ Installation
-Prérequis
-
-Visual Studio
- ou dotnet SDK
-
-.NET 6 ou supérieur
-
-Une connexion Internet
-
-⚠️ Avertissement
-Ce projet est à but éducatif. L’utilisation de bots peut être contraire aux conditions d’utilisation de certaines plateformes.
-L’auteur n’est pas responsable de l’usage que vous en ferez.
+### Étapes d’installation
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/Den1sMd/VintedBot.git
